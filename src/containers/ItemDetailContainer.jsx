@@ -10,7 +10,7 @@ const ItemDetailContainer = () => {
   useEffect(() => {
   const getItem = new Promise((resolve) => {
     setTimeout(() => {
-      resolve(products.find(p => p.id === itemId)); // ✅ sin Number()
+      resolve(products.find(p => p.id === Number(itemId)));
     }, 500);
   });
 

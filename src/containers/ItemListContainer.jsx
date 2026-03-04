@@ -11,10 +11,10 @@ const ItemListContainer = () => {
     const getProducts = new Promise((resolve) => {
       setTimeout(() => {
         if (categoryId) {
-          resolve(products.filter(p => p.category === categoryId));
-        } else {
-          resolve(products);
-        }
+  resolve(products.filter(p => p.category.toLowerCase() === categoryId.toLowerCase()));
+} else {
+  resolve(products);
+}
       }, 500);
     });
 
