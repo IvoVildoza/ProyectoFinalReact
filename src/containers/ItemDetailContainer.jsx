@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import products from "../data/products";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
 import ItemDetail from "../components/ItemDetail/ItemDetail";
 
 const ItemDetailContainer = () => {
@@ -8,16 +9,23 @@ const ItemDetailContainer = () => {
   const { itemId } = useParams();
 
   useEffect(() => {
-  const getItem = new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(products.find(p => p.id === Number(itemId)));
-    }, 500);
-  });
+    const docRef = doc(db, "products", itemId);
 
-  getItem.then(res => setItem(res));
-}, [itemId]);
+    getDoc(docRef)
+  .then((res) => {
+    console.log("DOC:", res);
+    console.log("DATA:", res.data());
 
-
+    if (res.exists()) {
+      const product = { id: res.id, ...res.data() };
+      console.log("PRODUCT:", product); // 👈 CLAVE
+      setItem({ id: res.id, ...res.data() });
+    } else {
+      console.log("No existe el producto");
+    }
+  })
+  .catch((error) => console.log(error));
+  }, [itemId]);
 
   return item ? <ItemDetail {...item} /> : <p>Cargando...</p>;
 };

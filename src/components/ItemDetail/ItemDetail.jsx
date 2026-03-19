@@ -1,27 +1,27 @@
 import { useState } from "react";
-import { useCart } from "../../context/CartContext";
+import { useCart } from "../../context/CartContext"; // 👈 ESTE
 import ItemCount from "../ItemCount/ItemCount";
 
-const ItemDetail = ({ id, title, price, category, description }) => {
+const ItemDetail = ({ id, name, price, category, img, stock }) => {
 
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
 
   const handleAdd = (quantity) => {
-    const item = { id, title, price };
+    const item = { id, name, price };
     addItem(item, quantity);
     setAdded(true);
   };
 
   return (
     <div>
-      <h2>{title}</h2>
+      <h2>{name}</h2>
+      <img src={img} alt={name} />
       <p>Precio: ${price}</p>
       <p>Categoría: {category}</p>
-      <p>Descripción: {description}</p>
 
       {!added ? (
-        <ItemCount onAdd={handleAdd} />
+        <ItemCount stock={stock} onAdd={handleAdd} />
       ) : (
         <p>Producto agregado al carrito ✅</p>
       )}
